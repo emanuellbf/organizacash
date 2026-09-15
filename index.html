@@ -7,9 +7,7 @@
     <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <!-- Vínculo do Manifesto PWA Corrigido -->
     <link rel="manifest" href="/manifest.json">
-    <!-- Biblioteca Oficial do Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
@@ -642,20 +640,16 @@
     </div>
 
     <script>
-        // CONFIGURAÇÃO DO SUPABASE
         const SUPABASE_URL = 'https://mfuqmhxluejirmqugkwa.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_AuYE7oO6MturEs4roFKVMg_C6tTAe8K';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // FUNÇÃO DE LOG DE ERROS AUTOMÁTICO NO SUPABASE (MONITORAMENTO)
         async function registrarErroRemotamente(origem, mensagemErro) {
             try {
                 await supabaseClient.from('logs_erros').insert([
                     { device_id: dadosApp?.deviceId || 'desconhecido', origem: origem, erro: mensagemErro, data: new Date().toISOString() }
                 ]);
-            } catch (e) {
-                // Silencioso para não travar o app se estiver sem internet
-            }
+            } catch (e) {}
         }
 
         let dadosApp;
@@ -746,7 +740,6 @@
             window.open(`https://wa.me/5532999410289?text=${textoWp}`, '_blank');
         }
 
-        // ATIVAÇÃO PRO COM TRATAMENTO DE EXCEÇÕES ROBUSTO E LOG
         async function digitarTokenAtivacao() {
             let menu = document.getElementById('dropdownMenuGeral');
             if (menu) menu.classList.remove('visivel');
@@ -802,7 +795,6 @@
             }
         }
 
-        // CHECAGEM AUTOMÁTICA AO ABRIR O APP (BLINDADA CONTRA QUEDAS DE REDE)
         window.addEventListener('DOMContentLoaded', async () => {
             let tipoVeiculoEl = document.getElementById('tipoVeiculo');
             if (tipoVeiculoEl) tipoVeiculoEl.value = dadosApp.tipoVeiculo;
@@ -828,9 +820,7 @@
                             dadosApp.lancamentosPro = [...dadosApp.lancamentosGratis];
                         }
                     }
-                } catch (e) {
-                    // Mantém estado local atual se estiver offline, sem travar o app
-                }
+                } catch (e) {}
             }
 
             carregarKmInputsHoje();
@@ -1305,7 +1295,6 @@
             }
         }
 
-        // SALVAR LANÇAMENTO COM VALIDAÇÃO RIGOROSA BLINDADA
         function salvarLancamento() {
             try {
                 let hojePtStr = isoParaPtBr(dataAtualIso());
